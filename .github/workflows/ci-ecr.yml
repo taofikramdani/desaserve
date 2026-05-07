@@ -10,6 +10,8 @@ env:
   ECR_REPOSITORY: desa-app
   ECS_CLUSTER: desa-cluster
   ECS_SERVICE: desa-task-service-
+  ECS_TASK_DEFINITION_FAMILY: desa-task
+  ECS_CONTAINER_NAME: desa-container
 
 jobs:
   deploy:
@@ -35,25 +37,39 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $ECR_REPOSITORY:latest .
+          docker build -t $ECR_REPOSITORY:${{ github.sha }} .
 
       - name: Tag Docker image
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
-          IMAGE_URI=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+          IMAGE_URI=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:${{ github.sha }}
 
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
 
-          docker tag $ECR_REPOSITORY:latest $IMAGE_URI
+          docker tag $ECR_REPOSITORY:${{ github.sha }} $IMAGE_URI
 
       - name: Push Docker image
         run: |
           docker push $IMAGE_URI
 
-      - name: Force ECS deployment
+      - name: Get current task definition
         run: |
-          aws ecs update-service \
-            --cluster $ECS_CLUSTER \
-            --service $ECS_SERVICE \
-            --force-new-deployment
+          aws ecs describe-task-definition \
+            --task-definition $ECS_TASK_DEFINITION_FAMILY \
+            --query taskDefinition > task-definition.json
+
+      - name: Render new task definition
+        id: render-task
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.ECS_CONTAINER_NAME }}
+          image: ${{ env.IMAGE_URI }}
+
+      - name: Deploy new task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-task.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}

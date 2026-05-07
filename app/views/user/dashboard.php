@@ -19,6 +19,15 @@ $formatLabel = function (?string $url): string {
   $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
   return $ext ? ' (' . strtoupper($ext) . ')' : '';
 };
+
+$formatFileName = function (?string $url): string {
+  if (!$url) {
+    return '';
+  }
+  $path = parse_url($url, PHP_URL_PATH) ?: '';
+  $name = basename($path);
+  return $name !== '' ? $name : 'file';
+};
 ?>
 <section class="hero">
   <div class="container">
@@ -65,8 +74,11 @@ $formatLabel = function (?string $url): string {
                             <img src="<?= htmlspecialchars($req['document_url']) ?>" alt="Dokumen">
                             <span class="file-preview-label">Preview</span>
                           </a>
+                          <div class="file-name"><?= htmlspecialchars($formatFileName($req['document_url'])) ?></div>
                         <?php else: ?>
-                          <a class="file-chip" target="_blank" href="<?= htmlspecialchars($req['document_url']) ?>">Lihat<?= htmlspecialchars($formatLabel($req['document_url'])) ?></a>
+                          <a class="file-chip" target="_blank" href="<?= htmlspecialchars($req['document_url']) ?>">
+                            <?= htmlspecialchars($formatFileName($req['document_url'])) ?><?= htmlspecialchars($formatLabel($req['document_url'])) ?>
+                          </a>
                         <?php endif; ?>
                       <?php else: ?>
                         -
@@ -117,8 +129,11 @@ $formatLabel = function (?string $url): string {
                             <img src="<?= htmlspecialchars($comp['photo_url']) ?>" alt="Foto bukti">
                             <span class="file-preview-label">Preview</span>
                           </a>
+                          <div class="file-name"><?= htmlspecialchars($formatFileName($comp['photo_url'])) ?></div>
                         <?php else: ?>
-                          <a class="file-chip" target="_blank" href="<?= htmlspecialchars($comp['photo_url']) ?>">Lihat<?= htmlspecialchars($formatLabel($comp['photo_url'])) ?></a>
+                          <a class="file-chip" target="_blank" href="<?= htmlspecialchars($comp['photo_url']) ?>">
+                            <?= htmlspecialchars($formatFileName($comp['photo_url'])) ?><?= htmlspecialchars($formatLabel($comp['photo_url'])) ?>
+                          </a>
                         <?php endif; ?>
                       <?php else: ?>
                         -
