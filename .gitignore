@@ -1,0 +1,27 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Environment files
+.env
+.env.*
+
+# Logs and runtime files
+*.log
+/tmp/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build artifacts
+/public/assets/*.map
+
+# Composer
+/composer.lock
+
+# Docker
+*.pid
+
