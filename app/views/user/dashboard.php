@@ -71,7 +71,7 @@ $formatFileName = function (?string $url): string {
                       <?php if ($req['document_url']): ?>
                         <?php if ($hasImagePreview($req['document_url'])): ?>
                           <a class="file-preview" href="<?= htmlspecialchars($req['document_url']) ?>" data-preview-url="<?= htmlspecialchars($req['document_url']) ?>">
-                            <img src="<?= htmlspecialchars($req['document_url']) ?>" alt="Dokumen">
+                            <img src="<?= htmlspecialchars($req['document_url']) ?>" alt="Dokumen" width="72" height="72">
                             <span class="file-preview-label">Preview</span>
                           </a>
                           <div class="file-name"><?= htmlspecialchars($formatFileName($req['document_url'])) ?></div>
@@ -126,7 +126,7 @@ $formatFileName = function (?string $url): string {
                       <?php if ($comp['photo_url']): ?>
                         <?php if ($hasImagePreview($comp['photo_url'])): ?>
                           <a class="file-preview" href="<?= htmlspecialchars($comp['photo_url']) ?>" data-preview-url="<?= htmlspecialchars($comp['photo_url']) ?>">
-                            <img src="<?= htmlspecialchars($comp['photo_url']) ?>" alt="Foto bukti">
+                            <img src="<?= htmlspecialchars($comp['photo_url']) ?>" alt="Foto bukti" width="72" height="72">
                             <span class="file-preview-label">Preview</span>
                           </a>
                           <div class="file-name"><?= htmlspecialchars($formatFileName($comp['photo_url'])) ?></div>
