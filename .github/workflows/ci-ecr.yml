@@ -9,7 +9,7 @@ env:
   AWS_REGION: ap-southeast-2
   ECR_REPOSITORY: desa-app
   ECS_CLUSTER: desa-cluster
-  ECS_SERVICE: desa-service
+  ECS_SERVICE: desa-task-service-
 
 jobs:
   deploy:
