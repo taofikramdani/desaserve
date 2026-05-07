@@ -157,6 +157,18 @@ $hideSidebar = $hideSidebar ?? false;
   </main>
 </div>
 
+<div class="modal" id="file-preview-modal" aria-hidden="true" role="dialog" aria-label="Preview file">
+  <div class="modal-backdrop" data-modal-close></div>
+  <div class="modal-dialog" role="document">
+    <button class="modal-close" type="button" aria-label="Close preview" data-modal-close>
+      <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <img id="file-preview-image" src="" alt="Preview" />
+  </div>
+</div>
+
 <script src="<?= asset_url('js/app.js') ?>"></script>
 <?php if (!$hideSidebar): ?>
   <script>

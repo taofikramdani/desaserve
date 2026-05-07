@@ -61,7 +61,7 @@ $formatLabel = function (?string $url): string {
                   <td>
                     <?php if ($req['document_url']): ?>
                       <?php if ($hasImagePreview($req['document_url'])): ?>
-                        <a class="file-preview" target="_blank" href="<?= htmlspecialchars($req['document_url']) ?>">
+                        <a class="file-preview" href="<?= htmlspecialchars($req['document_url']) ?>" data-preview-url="<?= htmlspecialchars($req['document_url']) ?>">
                           <img src="<?= htmlspecialchars($req['document_url']) ?>" alt="Dokumen">
                           <span class="file-preview-label">Preview</span>
                         </a>
@@ -127,7 +127,7 @@ $formatLabel = function (?string $url): string {
                   <td>
                     <?php if ($comp['photo_url']): ?>
                       <?php if ($hasImagePreview($comp['photo_url'])): ?>
-                        <a class="file-preview" target="_blank" href="<?= htmlspecialchars($comp['photo_url']) ?>">
+                        <a class="file-preview" href="<?= htmlspecialchars($comp['photo_url']) ?>" data-preview-url="<?= htmlspecialchars($comp['photo_url']) ?>">
                           <img src="<?= htmlspecialchars($comp['photo_url']) ?>" alt="Foto bukti">
                           <span class="file-preview-label">Preview</span>
                         </a>
