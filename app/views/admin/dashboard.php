@@ -70,10 +70,10 @@ $formatFileName = function (?string $url): string {
                   <td>
                     <?php if ($req['document_url']): ?>
                       <?php if ($hasImagePreview($req['document_url'])): ?>
-                        <a class="file-preview" href="<?= htmlspecialchars($req['document_url']) ?>" data-preview-url="<?= htmlspecialchars($req['document_url']) ?>">
+                        <button class="file-preview" type="button" data-preview-url="<?= htmlspecialchars($req['document_url']) ?>" aria-label="Preview dokumen">
                           <img src="<?= htmlspecialchars($req['document_url']) ?>" alt="Dokumen" width="72" height="72">
                           <span class="file-preview-label">Preview</span>
-                        </a>
+                        </button>
                         <div class="file-name"><?= htmlspecialchars($formatFileName($req['document_url'])) ?></div>
                       <?php else: ?>
                         <a class="file-chip" target="_blank" href="<?= htmlspecialchars($req['document_url']) ?>">
@@ -139,10 +139,10 @@ $formatFileName = function (?string $url): string {
                   <td>
                     <?php if ($comp['photo_url']): ?>
                       <?php if ($hasImagePreview($comp['photo_url'])): ?>
-                        <a class="file-preview" href="<?= htmlspecialchars($comp['photo_url']) ?>" data-preview-url="<?= htmlspecialchars($comp['photo_url']) ?>">
+                        <button class="file-preview" type="button" data-preview-url="<?= htmlspecialchars($comp['photo_url']) ?>" aria-label="Preview foto bukti">
                           <img src="<?= htmlspecialchars($comp['photo_url']) ?>" alt="Foto bukti" width="72" height="72">
                           <span class="file-preview-label">Preview</span>
-                        </a>
+                        </button>
                         <div class="file-name"><?= htmlspecialchars($formatFileName($comp['photo_url'])) ?></div>
                       <?php else: ?>
                         <a class="file-chip" target="_blank" href="<?= htmlspecialchars($comp['photo_url']) ?>">
