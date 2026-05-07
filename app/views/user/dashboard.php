@@ -1,5 +1,24 @@
 <?php
 use App\Helpers\Auth;
+
+$previewImageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+$hasImagePreview = function (?string $url) use ($previewImageExtensions): bool {
+  if (!$url) {
+    return false;
+  }
+  $path = parse_url($url, PHP_URL_PATH) ?: '';
+  $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+  return in_array($ext, $previewImageExtensions, true);
+};
+
+$formatLabel = function (?string $url): string {
+  if (!$url) {
+    return '';
+  }
+  $path = parse_url($url, PHP_URL_PATH) ?: '';
+  $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+  return $ext ? ' (' . strtoupper($ext) . ')' : '';
+};
 ?>
 <section class="hero">
   <div class="container">
@@ -41,7 +60,14 @@ use App\Helpers\Auth;
                     </td>
                     <td>
                       <?php if ($req['document_url']): ?>
-                        <a target="_blank" href="<?= htmlspecialchars($req['document_url']) ?>">Lihat</a>
+                        <?php if ($hasImagePreview($req['document_url'])): ?>
+                          <a class="file-preview" target="_blank" href="<?= htmlspecialchars($req['document_url']) ?>">
+                            <img src="<?= htmlspecialchars($req['document_url']) ?>" alt="Dokumen">
+                            <span class="file-preview-label">Preview</span>
+                          </a>
+                        <?php else: ?>
+                          <a class="file-chip" target="_blank" href="<?= htmlspecialchars($req['document_url']) ?>">Lihat<?= htmlspecialchars($formatLabel($req['document_url'])) ?></a>
+                        <?php endif; ?>
                       <?php else: ?>
                         -
                       <?php endif; ?>
@@ -86,7 +112,14 @@ use App\Helpers\Auth;
                     </td>
                     <td>
                       <?php if ($comp['photo_url']): ?>
-                        <a target="_blank" href="<?= htmlspecialchars($comp['photo_url']) ?>">Lihat</a>
+                        <?php if ($hasImagePreview($comp['photo_url'])): ?>
+                          <a class="file-preview" target="_blank" href="<?= htmlspecialchars($comp['photo_url']) ?>">
+                            <img src="<?= htmlspecialchars($comp['photo_url']) ?>" alt="Foto bukti">
+                            <span class="file-preview-label">Preview</span>
+                          </a>
+                        <?php else: ?>
+                          <a class="file-chip" target="_blank" href="<?= htmlspecialchars($comp['photo_url']) ?>">Lihat<?= htmlspecialchars($formatLabel($comp['photo_url'])) ?></a>
+                        <?php endif; ?>
                       <?php else: ?>
                         -
                       <?php endif; ?>
