@@ -9,7 +9,7 @@ env:
   AWS_REGION: ap-southeast-2
   ECR_REPOSITORY: desa-app
   ECS_CLUSTER: desa-cluster
-  ECS_SERVICE: desa-task-service- 
+  ECS_SERVICE: desa-service
 
 jobs:
   deploy:
@@ -30,21 +30,22 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
 
       - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
         run: |
-          docker build -t $ECR_REPOSITORY:${{ github.sha }} .
+          docker build -t $ECR_REPOSITORY:latest .
 
       - name: Tag Docker image
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
-          IMAGE_URI=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:${{ github.sha }}
+          IMAGE_URI=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
 
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
 
-          docker tag $ECR_REPOSITORY:${{ github.sha }} $IMAGE_URI
+          docker tag $ECR_REPOSITORY:latest $IMAGE_URI
 
       - name: Push Docker image
         run: |
@@ -56,4 +57,3 @@ jobs:
             --cluster $ECS_CLUSTER \
             --service $ECS_SERVICE \
             --force-new-deployment
-
