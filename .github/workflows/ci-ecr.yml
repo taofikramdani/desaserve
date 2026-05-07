@@ -59,6 +59,11 @@ jobs:
             --task-definition $ECS_TASK_DEFINITION_FAMILY \
             --query taskDefinition > task-definition.json
 
+      - name: Sanitize task definition
+        run: |
+          jq 'del(.enableFaultInjection)' task-definition.json > task-definition.sanitized.json
+          mv task-definition.sanitized.json task-definition.json
+
       - name: Render new task definition
         id: render-task
         uses: aws-actions/amazon-ecs-render-task-definition@v1
